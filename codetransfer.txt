@@ -1,4 +1,21 @@
-sudo ln -sf ~/vpp/build-root/install-vpp_debug-native/vpp/bin/vpp /usr/local/bin/vpp
-sudo ln -sf ~/vpp/build-root/install-vpp_debug-native/vpp/bin/vppctl /usr/local/bin/vppctl
+# 备份
+sudo cp /usr/local/etc/vpp/startup.conf /usr/local/etc/vpp/startup.conf.bak
 
-EOF
+# 确保日志目录存在（避免刚才的 couldn't open log）
+sudo mkdir -p /var/log/vpp
+sudo chown root:vpp /var/log/vpp
+sudo chmod 775 /var/log/vpp
+
+# 在 unix 段里添加/修改以下三行（若不存在就添加）
+#   log /var/log/vpp/vpp.log
+#   cli-listen /run/vpp/cli-vpp.sock
+#   gid vpp
+# 你可以用下面的方式快速追加（若已有 unix 段，请用编辑器手动放进去，避免重复块）：
+sudo bash -lc "grep -q 'cli-listen' /usr/local/etc/vpp/startup.conf || \
+cat >> /usr/local/etc/vpp/startup.conf <<'EOF'
+unix {
+  log /var/log/vpp/vpp.log
+  cli-listen /run/vpp/cli-vpp.sock
+  gid vpp
+}
+EOF"
