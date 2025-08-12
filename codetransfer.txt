@@ -1,11 +1,4 @@
-sudo tee /etc/yum.repos.d/fdio.repo <<EOF
-[fdio-release]
-name=fd.io stable release 24010
-baseurl=https://packagecloud.io/fdio/release/el/8/\$basearch
-repo_gpgcheck=1
-gpgcheck=0
-enabled=1
-gpgkey=https://packagecloud.io/fdio/release/gpgkey
-sslcacert=/etc/pki/tls/certs/ca-bundle.crt
-metadata_expire=300
+sudo ln -sf ~/vpp/build-root/install-vpp_debug-native/vpp/bin/vpp /usr/local/bin/vpp
+sudo ln -sf ~/vpp/build-root/install-vpp_debug-native/vpp/bin/vppctl /usr/local/bin/vppctl
+
 EOF
